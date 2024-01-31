@@ -134,9 +134,13 @@ void delTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] > 0 && map[i][j] < 101)
+            if (map[i][j] < 101)
             {
-                deltmp = map[i][j];
+                deltmp = 0;
+                if (map[i][j] > 0)
+                {
+                    deltmp = map[i][j];
+                }
                 for (int d = 0; d < 4; d++)
                 {
                     xx = i;
@@ -178,7 +182,7 @@ void delTree()
 
         ans += delmax[0].delans;
         map[delmax[0].x][delmax[0].y] = -(C);
-
+        
         for (int d = 0; d < 4; d++)
         {
             xx = delmax[0].x;
