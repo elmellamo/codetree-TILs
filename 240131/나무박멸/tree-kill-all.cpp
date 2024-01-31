@@ -190,7 +190,8 @@ void delTree()
     if (delmax.delans != 0)
     {
         ans += map[delmax.x][delmax.y];
-        map[delmax.x][delmax.y] = -(C);
+        map[delmax.x][delmax.y] = 0;
+        visited[delmax.x][delmax.y] = C;
 
         for (int d = 0; d < 4; d++)
         {
@@ -211,7 +212,6 @@ void delTree()
                     }
                     else if (map[xx][yy] == 0)
                     {
-                        map[xx][yy] = 0;
                         visited[xx][yy] = C;
                         break;
                     }
