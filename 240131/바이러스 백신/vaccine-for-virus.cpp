@@ -160,6 +160,8 @@ int main()
     cin.sync_with_stdio(false);
 
     cin >> N >> M;
+
+    int bacteria = 0;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -169,6 +171,10 @@ int main()
             {
                 hospital.push_back({i, j});
             }
+            else if (orimap[i][j] == 0)
+            {
+                bacteria = 1;
+            }
         }
     }
 
@@ -176,7 +182,7 @@ int main()
     {
         cout << "0";
     }
-    else if (hospital.size() == 0)
+    else if (bacteria == 0)
     {
         cout << "0";
     }
