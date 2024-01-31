@@ -134,13 +134,10 @@ void delTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] < 101)
+            if (map[i][j] > 0 && map[i][j] < 101)
             {
-                deltmp = 0;
-                if (map[i][j] > 0)
-                {
-                    deltmp = map[i][j];
-                }
+                deltmp = map[i][j];
+
                 for (int d = 0; d < 4; d++)
                 {
                     xx = i;
@@ -180,9 +177,9 @@ void delTree()
     {
         sort(delmax.begin(), delmax.end(), compare);
 
-        ans += delmax[0].delans;
+        ans += map[delmax[0].x][delmax[0].y];
         map[delmax[0].x][delmax[0].y] = -(C);
-        
+
         for (int d = 0; d < 4; d++)
         {
             xx = delmax[0].x;
@@ -194,6 +191,7 @@ void delTree()
 
                 if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][yy] < 101)
                 {
+                    ans += map[xx][yy];
                     map[xx][yy] = -(C);
                 }
                 else if (isArea(xx, yy) && map[xx][yy] < 0)
