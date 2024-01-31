@@ -202,12 +202,12 @@ void delTree()
 
                 if (isArea(xx, yy))
                 {
-                    if (map[xx][yy] >= 0 && map[xx][yy] < 101)
+                    if (map[xx][yy] > 0 && map[xx][yy] < 101)
                     {
                         ans += map[xx][yy];
                         map[xx][yy] = -(C);
                     }
-                    else if (map[xx][yy] < 0)
+                    else if (map[xx][yy] <= 0)
                     {
                         map[xx][yy] = -(C);
                         break;
