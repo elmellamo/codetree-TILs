@@ -128,7 +128,10 @@ void childTree()
 void delTree()
 {
     int deltmp, xx, yy;
-    vector<delinfo> delmax;
+    delinfo delmax;
+    delmax.delans = 0;
+    delmax.x = 0;
+    delmax.y = 0;
 
     for (int i = 0; i < N; i++)
     {
@@ -146,7 +149,7 @@ void delTree()
                     {
                         xx = xx + ddx[d];
                         yy = yy + ddy[d];
-                        if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][yy] < 101)
+                        if (isArea(xx, yy) && map[xx][yy] > 0 && map[xx][yy] < 101)
                         {
                             deltmp += map[xx][yy];
                         }
@@ -157,7 +160,12 @@ void delTree()
                     }
                 }
 
-                delmax.push_back({i, j, deltmp});
+                if (deltmp > delmax.delans)
+                {
+                    delmax.delans = deltmp;
+                    delmax.x = i;
+                    delmax.y = j;
+                }
             }
         }
     }
@@ -173,17 +181,15 @@ void delTree()
         }
     }
 
-    if (!delmax.empty())
+    if (delmax.delans != 0)
     {
-        sort(delmax.begin(), delmax.end(), compare);
-
-        ans += map[delmax[0].x][delmax[0].y];
-        map[delmax[0].x][delmax[0].y] = -(C);
+        ans += map[delmax.x][delmax.y];
+        map[delmax.x][delmax.y] = -(C);
 
         for (int d = 0; d < 4; d++)
         {
-            xx = delmax[0].x;
-            yy = delmax[0].y;
+            xx = delmax.x;
+            yy = delmax.y;
             for (int k = 0; k < K; k++)
             {
                 xx = xx + ddx[d];
@@ -205,8 +211,6 @@ void delTree()
                 }
             }
         }
-
-        delmax.clear();
     }
 }
 
