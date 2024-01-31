@@ -51,11 +51,7 @@ void growTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] < 0)
-            {
-                map[i][j] += 1;
-            }
-            else if (map[i][j] > 0 && map[i][j] < 101)
+            if (map[i][j] > 0 && map[i][j] < 101)
             {
                 tmp = 0;
                 for (int d = 0; d < 4; d++)
@@ -165,12 +161,23 @@ void delTree()
         }
     }
 
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            if (map[i][j] < 0)
+            {
+                map[i][j] += 1;
+            }
+        }
+    }
+
     if (!delmax.empty())
     {
         sort(delmax.begin(), delmax.end(), compare);
 
         ans += delmax[0].delans;
-        map[delmax[0].x][delmax[0].y] = -(C + 1);
+        map[delmax[0].x][delmax[0].y] = -(C);
 
         for (int d = 0; d < 4; d++)
         {
@@ -183,7 +190,11 @@ void delTree()
 
                 if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][yy] < 101)
                 {
-                    map[xx][yy] = -(C + 1);
+                    map[xx][yy] = -(C);
+                }
+                else if (isArea(xx, yy) && map[xx][yy] < 0)
+                {
+                    map[xx][yy] += -(C);
                 }
                 else
                 {
@@ -191,6 +202,8 @@ void delTree()
                 }
             }
         }
+
+        delmax.clear();
     }
 }
 
