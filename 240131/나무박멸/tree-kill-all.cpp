@@ -1,17 +1,12 @@
 #include <iostream>
 #include <memory.h>
 #include <vector>
-#include <algorithm>
 using namespace std;
-
-struct delinfo
-{
-    int x, y, delans;
-};
-struct info
-{
-    int x, y;
-};
+/*
+여기서 쓰이진 않았지만 vector를 정렬할 때는
+sort(v.begin(), v.end(), compare);
+이렇게 하고, 소문자가 앞에 온다.
+#include <algorithm>
 
 bool compare(delinfo o, delinfo O)
 {
@@ -30,6 +25,16 @@ bool compare(delinfo o, delinfo O)
 
     return false;
 }
+*/
+
+struct delinfo
+{
+    int x, y, delans;
+};
+struct info
+{
+    int x, y;
+};
 
 int N, M, K, C, ans;
 int map[27][27];
@@ -195,15 +200,22 @@ void delTree()
                 xx = xx + ddx[d];
                 yy = yy + ddy[d];
 
-                if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][yy] < 101)
+                if (isArea(xx, yy))
                 {
-                    ans += map[xx][yy];
-                    map[xx][yy] = -(C);
-                }
-                else if (isArea(xx, yy) && map[xx][yy] < 0)
-                {
-                    map[xx][yy] = -(C);
-                    break;
+                    if (map[xx][yy] >= 0 && map[xx][yy] < 101)
+                    {
+                        ans += map[xx][yy];
+                        map[xx][yy] = -(C);
+                    }
+                    else if (map[xx][yy] < 0)
+                    {
+                        map[xx][yy] = -(C);
+                        break;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
                 else
                 {
