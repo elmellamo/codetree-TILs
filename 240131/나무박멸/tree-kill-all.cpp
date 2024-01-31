@@ -196,7 +196,7 @@ void delTree()
                 }
                 else if (isArea(xx, yy) && map[xx][yy] < 0)
                 {
-                    map[xx][yy] += -(C);
+                    map[xx][yy] = -(C);
                     break;
                 }
                 else
