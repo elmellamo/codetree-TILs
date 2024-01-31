@@ -181,7 +181,7 @@ void delTree()
                 xx = xx + ddx[d];
                 yy = yy + ddy[d];
 
-                if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][xx] < 101)
+                if (isArea(xx, yy) && map[xx][yy] >= 0 && map[xx][yy] < 101)
                 {
                     map[xx][yy] = -(C + 1);
                 }
