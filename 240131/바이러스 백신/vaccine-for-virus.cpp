@@ -156,6 +156,14 @@ int main()
         }
     }
 
-    solve(-1, 0);
-    cout << ans;
+    if (allDel())
+    {
+        cout << "0";
+    }
+    else
+    {
+
+        solve(-1, 0);
+        cout << ans;
+    }
 }
