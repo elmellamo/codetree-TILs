@@ -38,6 +38,7 @@ struct info
 
 int N, M, K, C, ans;
 int map[27][27];
+int visited[27][27];
 int growmap[27][27];
 int dx[4] = {-1, 1, 0, 0};
 int dy[4] = {0, 0, 1, -1};
@@ -56,7 +57,7 @@ void growTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] > 0 && map[i][j] < 101)
+            if (map[i][j] > 0)
             {
                 tmp = 0;
                 for (int d = 0; d < 4; d++)
@@ -64,7 +65,7 @@ void growTree()
                     xx = i + dx[d];
                     yy = j + dy[d];
 
-                    if (isArea(xx, yy) && map[xx][yy] > 0 && map[xx][yy] < 101)
+                    if (isArea(xx, yy) && map[xx][yy] > 0)
                     {
                         tmp++;
                     }
@@ -92,7 +93,7 @@ void childTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] > 0 && map[i][j] < 101)
+            if (map[i][j] > 0)
             {
                 growtmp.clear();
                 howmuch = 0;
@@ -142,7 +143,7 @@ void delTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] > 0 && map[i][j] < 101)
+            if (map[i][j] > 0)
             {
                 deltmp = map[i][j];
 
@@ -154,7 +155,7 @@ void delTree()
                     {
                         xx = xx + ddx[d];
                         yy = yy + ddy[d];
-                        if (isArea(xx, yy) && map[xx][yy] > 0 && map[xx][yy] < 101)
+                        if (isArea(xx, yy) && map[xx][yy] > 0)
                         {
                             deltmp += map[xx][yy];
                         }
@@ -179,9 +180,9 @@ void delTree()
     {
         for (int j = 0; j < N; j++)
         {
-            if (map[i][j] < 0)
+            if (visited[i][j] > 0)
             {
-                map[i][j] += 1;
+                visited[i][j] -= 1;
             }
         }
     }
@@ -202,14 +203,16 @@ void delTree()
 
                 if (isArea(xx, yy))
                 {
-                    if (map[xx][yy] > 0 && map[xx][yy] < 101)
+                    if (map[xx][yy] > 0)
                     {
                         ans += map[xx][yy];
-                        map[xx][yy] = -(C);
+                        map[xx][yy] = 0;
+                        visited[xx][yy] = C;
                     }
-                    else if (map[xx][yy] <= 0)
+                    else if (map[xx][yy] == 0)
                     {
-                        map[xx][yy] = -(C);
+                        map[xx][yy] = 0;
+                        visited[xx][yy] = C;
                         break;
                     }
                     else
@@ -237,10 +240,6 @@ int main()
         for (int j = 0; j < N; j++)
         {
             cin >> map[i][j];
-            if (map[i][j] == -1)
-            {
-                map[i][j] = 101;
-            }
         }
     }
 
