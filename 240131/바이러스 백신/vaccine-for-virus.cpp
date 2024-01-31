@@ -51,7 +51,11 @@ int allDel()
             {
                 return 0;
             }
-            maxcnt = maxcnt > visited[i][j] ? maxcnt : visited[i][j];
+
+            if (copymap[i][j] == 0 && visited[i][j] > 0)
+            {
+                maxcnt = maxcnt > visited[i][j] ? maxcnt : visited[i][j];
+            }
         }
     }
 
@@ -106,16 +110,10 @@ void BFS()
             xx = x + dx[d];
             yy = y + dy[d];
 
-            if (isArea(xx, yy) && copymap[xx][yy] == 0 && visited[xx][yy] == 0)
+            if (isArea(xx, yy) && copymap[xx][yy] != 1 && visited[xx][yy] == 0)
             {
                 q.push({xx, yy, cnt + 1});
                 visited[xx][yy] = cnt + 1;
-                // cout << "xx yy  " << xx << "  " << yy << "\n";
-            }
-            else if (isArea(xx, yy) && copymap[xx][yy] == 2 && visited[xx][yy] == 0)
-            {
-                q.push({xx, yy, cnt});
-                visited[xx][yy] = cnt;
                 // cout << "xx yy  " << xx << "  " << yy << "\n";
             }
         }
