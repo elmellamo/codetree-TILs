@@ -102,7 +102,7 @@ void childTree()
                     xx = i + dx[d];
                     yy = j + dy[d];
 
-                    if (isArea(xx, yy) && map[xx][yy] == 0)
+                    if (isArea(xx, yy) && map[xx][yy] == 0 && visited[xx][yy] == 0)
                     {
                         growtmp.push_back({xx, yy});
                     }
