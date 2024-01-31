@@ -176,6 +176,10 @@ int main()
     {
         cout << "0";
     }
+    else if (hospital.size() == 0)
+    {
+        cout << "0";
+    }
     else
     {
 
