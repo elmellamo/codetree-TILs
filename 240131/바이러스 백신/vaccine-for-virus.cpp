@@ -29,8 +29,20 @@ int isArea(int x, int y)
     return -1 < x && x < N && -1 < y && y < N;
 }
 
+void printm()
+{
+    for (int i = 0; i < N; i++)
+    {
+        for (int j = 0; j < N; j++)
+        {
+            cout << visited[i][j] << " ";
+        }
+        cout << "\n";
+    }
+}
 int allDel()
 {
+    int maxcnt = 0;
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -39,10 +51,11 @@ int allDel()
             {
                 return 0;
             }
+            maxcnt = maxcnt > visited[i][j] ? maxcnt : visited[i][j];
         }
     }
 
-    return 1;
+    return maxcnt;
 }
 
 void copyMap()
@@ -57,7 +70,7 @@ void copyMap()
 }
 void BFS()
 {
-    int x, y, xx, yy, cnt;
+    int x, y, xx, yy, cnt, tmp;
     memset(visited, 0, sizeof(visited));
 
     for (int i = 0; i < M; i++)
@@ -65,14 +78,16 @@ void BFS()
         x = hospital[pickhospital[i]].x;
         y = hospital[pickhospital[i]].y;
 
+        // cout << "x y" << x << "  " << y << "\n";
         for (int d = 0; d < 4; d++)
         {
             xx = x + dx[d];
             yy = y + dy[d];
 
-            if (isArea(xx, yy) && copymap[xx][yy] == 0 && visited[xx][yy] == 0)
+            if (isArea(xx, yy) && copymap[xx][yy] != 1 && visited[xx][yy] == 0)
             {
                 visited[xx][yy] = 1;
+                // cout << "xx yy  " << xx << "  " << yy << "\n";
                 q.push({xx, yy, 1});
             }
         }
@@ -95,40 +110,41 @@ void BFS()
             {
                 q.push({xx, yy, cnt + 1});
                 visited[xx][yy] = cnt + 1;
+                // cout << "xx yy  " << xx << "  " << yy << "\n";
+            }
+            else if (isArea(xx, yy) && copymap[xx][yy] == 2 && visited[xx][yy] == 0)
+            {
+                q.push({xx, yy, cnt});
+                visited[xx][yy] = cnt;
+                // cout << "xx yy  " << xx << "  " << yy << "\n";
             }
         }
     }
 
-    if (allDel())
+    int tmpans;
+    tmpans = allDel();
+    if (tmpans > 0)
     {
+        // cout << "tmpans >>> " << tmpans << "\n";
         if (ans == -1)
         {
-            ans = cnt;
+            ans = tmpans;
         }
         else
         {
-            ans = ans < cnt ? ans : cnt;
+            ans = ans < tmpans ? ans : tmpans;
         }
     }
 }
 
-void printm()
-{
-    for (int i = 0; i < N; i++)
-    {
-        for (int j = 0; j < N; j++)
-        {
-            cout << visited[i][j] << " ";
-        }
-        cout << "\n";
-    }
-}
 void solve(int pos, int depth)
 {
     if (depth == M)
     {
         copyMap();
         BFS();
+        // printm();
+        // cout << "\n";
         return;
     }
     for (int next = pos + 1; next < hospital.size(); next++)
