@@ -58,6 +58,7 @@ int destroyMap(int m)
         y = y + ady[d];
         if (isArea(x, y) && map[x][y] > 0)
         {
+            // cout << "destroy >> " << map[x][y] << "\n";
             ans += map[x][y];
             map[x][y] = 0;
             cnt++;
@@ -95,40 +96,29 @@ void goAroundMap(int howmany)
         {
             cnt--;
         }
-        monster.push_back(map[x][y]);
+        else
+        {
+            // cout << map[x][y] << " ";
+            monster.push_back(map[x][y]);
+        }
+
         x = x + cdx[d];
         y = y + cdy[d];
-        repeat = 1;
-        gokey = 1;
-
-        while (isArea(x, y) && (map[x][y] > 0 || (map[x][y] == 0 && cnt > 0)) && gokey)
+        if (isArea(x, y) && (map[x][y] > 0 || (map[x][y] == 0 && cnt > 0)))
         {
-            repeat++;
-            d = (d + 1) % 4;
-            for (int i = 0; i < repeat; i++)
+            if (map[x][y] == 0 && cnt > 0)
             {
-                x = x + cdx[d];
-                y = y + cdy[d];
-                if (isArea(x, y))
-                {
-                    if (map[x][y] > 0)
-                    {
-                        monster.push_back(map[x][y]);
-                    }
-                    else if (map[x][y] == 0 && cnt > 0)
-                    {
-                        cnt--;
-                    }
-                }
-                else
-                {
-                    gokey = 0;
-                    break;
-                }
+                cnt--;
             }
+            // cout << map[x][y] << " ";
+            monster.push_back(map[x][y]);
 
-            if (gokey)
+            repeat = 1;
+            gokey = 1;
+
+            while (isArea(x, y) && (map[x][y] > 0 || (map[x][y] == 0 && cnt > 0)) && gokey)
             {
+                repeat++;
                 d = (d + 1) % 4;
                 for (int i = 0; i < repeat; i++)
                 {
@@ -138,6 +128,7 @@ void goAroundMap(int howmany)
                     {
                         if (map[x][y] > 0)
                         {
+                            // cout << map[x][y] << " ";
                             monster.push_back(map[x][y]);
                         }
                         else if (map[x][y] == 0 && cnt > 0)
@@ -149,6 +140,33 @@ void goAroundMap(int howmany)
                     {
                         gokey = 0;
                         break;
+                    }
+                }
+
+                if (gokey)
+                {
+                    d = (d + 1) % 4;
+                    for (int i = 0; i < repeat; i++)
+                    {
+                        x = x + cdx[d];
+                        y = y + cdy[d];
+                        if (isArea(x, y))
+                        {
+                            if (map[x][y] > 0)
+                            {
+                                // cout << map[x][y] << " ";
+                                monster.push_back(map[x][y]);
+                            }
+                            else if (map[x][y] == 0 && cnt > 0)
+                            {
+                                cnt--;
+                            }
+                        }
+                        else
+                        {
+                            gokey = 0;
+                            break;
+                        }
                     }
                 }
             }
@@ -172,6 +190,7 @@ int removeMany()
                 samecnt++;
                 if (samecnt >= 4)
                 {
+                    // cout << "remove Many >>  samecnt" << samecnt << "   st " << st << " >>> " << samecnt * st << "\n";
                     ans += (samecnt * st);
                     gokey = 0;
                 }
@@ -187,6 +206,7 @@ int removeMany()
             {
                 if (samecnt >= 4)
                 {
+                    // cout << "remove Many >>  samecnt" << samecnt << "   st " << st << " >>> " << samecnt * st << "\n";
                     ans += (samecnt * st);
                     gokey = 0;
                 }
@@ -210,6 +230,7 @@ int removeMany()
             {
                 if (samecnt >= 4)
                 {
+                    // cout << "remove Many >>  samecnt" << samecnt << "   st " << st << " >>> " << samecnt * st << "\n";
                     ans += (samecnt * st);
                     gokey = 0;
                 }
@@ -244,14 +265,16 @@ void printmonster()
 
 void carveMap()
 {
+    memset(map, 0, sizeof(map));
     int x, y, d, repeat, gokey;
     int i = 0;
-    x = (N / 2) - 1;
+    x = (N / 2);
     y = (N / 2) - 1;
     d = 0;
     gokey = 1;
     repeat = 1;
 
+    // cout << "map " << x << " , " << y << "  >> monster[" << i << "] " << monster[i] << "\n";
     map[x][y] = monster[i];
     i++;
 
@@ -259,39 +282,20 @@ void carveMap()
     y = y + cdy[d];
     if (isArea(x, y) && i < monster.size())
     {
+        // cout << "map " << x << " , " << y << "  >> monster[" << i << "] " << monster[i] << "\n";
         map[x][y] = monster[i];
         i++;
-    }
-
-    while (isArea(x, y) && i < monster.size() && gokey)
-    {
-        repeat++;
-        d = (d + 1) % 4;
-        for (int i = 0; i < repeat; i++)
+        while (isArea(x, y) && i < monster.size() && gokey)
         {
-            x = x + cdx[d];
-            y = y + cdy[d];
-            if (isArea(x, y))
-            {
-                map[x][y] = monster[i];
-                i++;
-            }
-            else
-            {
-                gokey = 0;
-                break;
-            }
-        }
-
-        if (gokey)
-        {
+            repeat++;
             d = (d + 1) % 4;
-            for (int i = 0; i < repeat; i++)
+            for (int repi = 0; repi < repeat; repi++)
             {
                 x = x + cdx[d];
                 y = y + cdy[d];
-                if (isArea(x, y))
+                if (isArea(x, y) && i < monster.size())
                 {
+                    // cout << "map " << x << " , " << y << "  >> monster[" << i << "] " << monster[i] << "\n";
                     map[x][y] = monster[i];
                     i++;
                 }
@@ -299,6 +303,27 @@ void carveMap()
                 {
                     gokey = 0;
                     break;
+                }
+            }
+
+            if (gokey)
+            {
+                d = (d + 1) % 4;
+                for (int repi = 0; repi < repeat; repi++)
+                {
+                    x = x + cdx[d];
+                    y = y + cdy[d];
+                    if (isArea(x, y) && i < monster.size())
+                    {
+                        // cout << "map " << x << " , " << y << "  >> monster[" << i << "] " << monster[i] << "\n";
+                        map[x][y] = monster[i];
+                        i++;
+                    }
+                    else
+                    {
+                        gokey = 0;
+                        break;
+                    }
                 }
             }
         }
@@ -390,15 +415,19 @@ int main()
             if (!monster.empty())
             {
                 removemore = removeMany();
+                // printmonster();
                 while (!removemore)
                 {
                     removemore = removeMany();
+                    // printmonster();
                 }
             }
             if (!monster.empty())
             {
                 matchMonster();
+                // printmonster();
                 carveMap();
+                // printm();
             }
         }
     }
