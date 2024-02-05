@@ -139,7 +139,7 @@ void packMove()
                 secx = firx + mx[j];
                 secy = firy + my[j];
 
-                if (isArea(secx, secy) && !visited[secx][secy])
+                if (isArea(secx, secy))
                 {
                     seccnt = monster[secx][secy].size();
                     visited[secx][secy] = 1;
@@ -147,11 +147,17 @@ void packMove()
                     {
                         thirx = secx + mx[k];
                         thiry = secy + my[k];
-                        if (isArea(thirx, thiry) && !visited[thirx][thiry])
+                        if (isArea(thirx, thiry))
                         {
-                            thircnt = monster[thirx][thiry].size();
+                            if (!visited[thirx][thiry])
+                            {
+                                thircnt = monster[thirx][thiry].size();
+                            }
+                            else
+                            {
+                                thircnt = 0;
+                            }
                             info.push_back({i, j, k, fircnt + seccnt + thircnt});
-                            visited[thirx][thiry] = 0;
                         }
                     }
 
