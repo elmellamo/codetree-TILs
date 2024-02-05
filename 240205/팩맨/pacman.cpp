@@ -70,6 +70,7 @@ void moveMonster()
 {
     vector<int> tmp[5][5];
     int x, y, d;
+    int stayflag;
 
     for (int i = 1; i < 5; i++)
     {
@@ -79,6 +80,7 @@ void moveMonster()
             {
                 for (auto mon : monster[i][j])
                 {
+                    stayflag = 1;
                     d = mon;
                     for (int dd = 0; dd < 8; dd++)
                     {
@@ -88,9 +90,14 @@ void moveMonster()
                         if (isArea(x, y) && !isMonster(x, y) && map[x][y] == 0)
                         {
                             tmp[x][y].push_back(d);
+                            stayflag = 0;
                             break;
                         }
                         d = (d + 1) % 8;
+                    }
+                    if (stayflag)
+                    {
+                        tmp[i][j].push_back(mon);
                     }
                 }
             }
