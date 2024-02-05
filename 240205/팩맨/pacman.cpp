@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory.h>
 using namespace std;
 
 typedef struct
@@ -71,7 +72,6 @@ void moveMonster()
     vector<int> tmp[5][5];
     int x, y, d;
     int stayflag;
-
     for (int i = 1; i < 5; i++)
     {
         for (int j = 1; j < 5; j++)
@@ -122,6 +122,8 @@ void packMove()
 {
     int firx, firy, secx, secy, thirx, thiry, fircnt, seccnt, thircnt;
     vector<monsterinfo> info;
+    int visited[5][5];
+    memset(visited, 0, sizeof(visited));
 
     for (int i = 0; i < 4; i++)
     {
@@ -130,31 +132,38 @@ void packMove()
 
         if (isArea(firx, firy))
         {
+            visited[firx][firy] = 1;
             fircnt = monster[firx][firy].size();
             for (int j = 0; j < 4; j++)
             {
                 secx = firx + mx[j];
                 secy = firy + my[j];
 
-                if (isArea(secx, secy))
+                if (isArea(secx, secy) && !visited[secx][secy])
                 {
                     seccnt = monster[secx][secy].size();
+                    visited[secx][secy] = 1;
                     for (int k = 0; k < 4; k++)
                     {
                         thirx = secx + mx[k];
                         thiry = secy + my[k];
-                        if (isArea(thirx, thiry))
+                        if (isArea(thirx, thiry) && !visited[thirx][thiry])
                         {
                             thircnt = monster[thirx][thiry].size();
                             info.push_back({i, j, k, fircnt + seccnt + thircnt});
+                            visited[thirx][thiry] = 0;
                         }
                     }
+
+                    visited[secx][secy] = 0;
                 }
             }
+            visited[firx][firy] = 0;
         }
     }
 
     sort(info.begin(), info.end(), cmp);
+
     packx = packx + mx[info[0].fird];
     packy = packy + my[info[0].fird];
     if (!monster[packx][packy].empty())
